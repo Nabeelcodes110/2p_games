@@ -1,6 +1,10 @@
 # 2P Games
 
-Two-player browser games over Socket.IO rooms, with a Minecraft-inspired block/pixel look. First game: **Skribble** (one player draws a secret word, the other guesses it).
+Two-player browser games over Socket.IO rooms, with a Minecraft-inspired block/pixel look. Games: **Skribble** (one player draws a secret word, the other guesses it) and **Colors** (memorize a color, then match it).
+
+**Play it live:** https://inquisitive-lollipop-d4b774.netlify.app/
+
+The frontend is hosted on Netlify and the Socket.IO server on Render. The Render service must list the Netlify origin in `CLIENT_ORIGINS` (`https://inquisitive-lollipop-d4b774.netlify.app`, no trailing slash), and the frontend must be built with `VITE_SERVER_URL` set to the Render URL.
 
 Stack: TypeScript, React + Vite + SCSS modules, PixiJS (drawing surface), Node + Express + Socket.IO, npm workspaces (`apps/web`, `apps/server`, `packages/shared`).
 
