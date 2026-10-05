@@ -1,0 +1,366 @@
+// OWNER: Agent 3
+@use '../../styles/tokens' as *;
+@use '../../styles/mixins' as *;
+
+.game {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'word'
+    'board'
+    'chat';
+  width: 100%;
+  min-width: 0;
+
+  @include desktop-up {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
+    grid-template-areas:
+      'word word'
+      'board chat';
+    align-items: start;
+  }
+}
+
+// ---------- Word bar ----------
+
+.wordBar {
+  grid-area: word;
+  min-height: 56px;
+  display: flex;
+  justify-content: center;
+}
+
+.word {
+  @include bevel($parchment, #fff8e6, $parchment-dark);
+  @include enter(pop-in);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 12px;
+  padding: 8px 16px;
+  color: $ink;
+  max-width: 100%;
+}
+
+.reveal {
+  @include bevel($gold, #ffe58a, $gold-dark);
+}
+
+.wordLabel {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.wordText {
+  @include pixel-heading(1.1rem);
+  text-shadow: none;
+  text-transform: uppercase;
+  color: $ink;
+}
+
+.wordHint {
+  font-size: 0.85rem;
+}
+
+.mask {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.maskSlot {
+  width: 14px;
+  height: 4px;
+  margin-top: 14px;
+  background: $ink;
+}
+
+// ---------- Board ----------
+
+.board {
+  grid-area: board;
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.canvasFrame {
+  @include bevel($dirt, $dirt-light, $dirt-dark);
+  position: relative;
+  padding: 8px;
+  overflow: hidden;
+}
+
+.canvasHost {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #fff;
+  overflow: hidden;
+}
+
+// Block page scrolling only while this player can draw on the surface.
+.canvasDrawable {
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.canvas {
+  display: block;
+  max-width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.watching {
+  text-align: center;
+  padding: 8px;
+  font-weight: 600;
+}
+
+.error {
+  background: $danger-bg;
+  color: $danger;
+  border: 4px solid $charcoal;
+  padding: 6px 10px;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+// ---------- Tool palette ----------
+
+.palette {
+  @include stone-texture;
+  border: 4px solid $charcoal;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 8px;
+}
+
+.slotGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.colors {
+  max-width: calc(6 * #{$touch-target} + 5 * 4px);
+
+  @include tablet-up {
+    max-width: none;
+  }
+}
+
+.slot {
+  @include inset;
+  @include focus-ring;
+  width: $touch-target;
+  height: $touch-target;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform $motion-fast ease-out;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &[aria-pressed='true'] {
+    outline: 4px solid $gold;
+    outline-offset: -4px;
+    box-shadow:
+      inset 4px 4px 0 $charcoal,
+      0 0 0 2px $gold;
+  }
+
+  @include reduced-motion {
+    transition: none;
+
+    &:hover,
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+.swatch {
+  width: 24px;
+  height: 24px;
+  border: 2px solid $charcoal;
+}
+
+.sizeDot {
+  display: block;
+  background: $parchment;
+  border: 2px solid $charcoal;
+}
+
+.clearButton {
+  margin-left: auto;
+}
+
+// ---------- Chat ----------
+
+.chat {
+  grid-area: chat;
+  @include bevel($charcoal-light, $stone-dark, $charcoal);
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 8px;
+  padding: 8px;
+  min-width: 0;
+}
+
+.log {
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  min-height: 120px;
+  max-height: 30vh;
+  max-height: 30dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.25);
+
+  @include desktop-up {
+    max-height: 420px;
+  }
+}
+
+.logEmpty {
+  opacity: 0.75;
+  font-style: italic;
+}
+
+.message {
+  overflow-wrap: anywhere;
+  animation: fade-in $motion-base ease-out;
+
+  @include reduced-motion {
+    animation: none;
+  }
+}
+
+.message_correct {
+  color: $gold;
+  font-weight: 700;
+}
+
+.message_system {
+  color: $sky;
+  font-style: italic;
+}
+
+.author {
+  font-weight: 700;
+}
+
+.guessForm {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+}
+
+.guessInput {
+  @include inset($parchment, $parchment-dark, $stone-dark);
+  @include focus-ring;
+  flex: 1;
+  min-width: 0;
+  min-height: $touch-target;
+  padding: 8px 10px;
+  color: $ink;
+  // 16px prevents iOS zoom-on-focus.
+  font-size: 16px;
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
+// ---------- Correct-guess burst ----------
+
+.burst {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.burstLabel {
+  @include pixel-heading(1rem);
+  color: $gold;
+  -webkit-text-stroke: 1px $charcoal;
+  animation: burst-label 900ms ease-out both;
+}
+
+.particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: $gold;
+  border: 2px solid $charcoal;
+  animation: burst-particle 700ms ease-out both;
+}
+
+.particleAlt {
+  background: $grass-light;
+}
+
+@keyframes burst-particle {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(0.5);
+  }
+}
+
+@keyframes burst-label {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@include reduced-motion {
+  .particle {
+    display: none;
+  }
+
+  .burstLabel {
+    animation: none;
+    opacity: 0;
+  }
+
+  .word {
+    animation: none;
+  }
+}

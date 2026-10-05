@@ -1,0 +1,352 @@
+@use '../styles/tokens' as *;
+@use '../styles/mixins' as *;
+
+@keyframes active-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+@keyframes banner-in {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes confetti {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) rotate(260deg);
+  }
+}
+
+@keyframes trophy {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.host {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  @include enter(fade-in);
+
+  @include tablet-up {
+    padding: 20px;
+  }
+}
+
+.hud {
+  @include bevel($stone-dark, $stone, $charcoal);
+  padding: 10px 12px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    'round timer'
+    'scores scores';
+  align-items: center;
+
+  @include tablet-up {
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: 'round scores timer';
+    gap: 16px;
+  }
+}
+
+.round {
+  grid-area: round;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.roundLabel {
+  @include pixel-heading(0.7rem);
+  color: $gold;
+}
+
+.turnLabel {
+  font-size: 0.9rem;
+  color: $parchment;
+}
+
+.scores {
+  grid-area: scores;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.score {
+  @include inset($charcoal-light, $stone-dark, #111);
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+  color: $parchment;
+}
+
+.scoreActive {
+  border-color: $gold;
+  animation: active-pulse 1.4s ease-in-out infinite;
+  @include reduced-motion {
+    animation: none;
+  }
+}
+
+.scoreName {
+  font-weight: 700;
+  font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scoreValue {
+  @include pixel-heading(1rem);
+  color: $gold;
+  flex: none;
+}
+
+.timer {
+  grid-area: timer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  min-width: 96px;
+}
+
+.timerValue {
+  @include pixel-heading(1.25rem);
+  color: $parchment;
+}
+
+.timerLow {
+  color: $danger;
+}
+
+.timerCaption {
+  font-size: 0.8rem;
+  color: $stone-light;
+}
+
+.bar {
+  @include inset($charcoal, $stone-dark, #000);
+  width: 100%;
+  height: 12px;
+  border-width: 2px;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: $grass-light;
+  transform-origin: left center;
+}
+
+.barLow {
+  background: $danger;
+}
+
+.banner {
+  @include bevel($gold-dark, $gold, #7a5d0d);
+  color: $ink;
+  padding: 10px 14px;
+  font-weight: 700;
+  text-align: center;
+  animation: banner-in $motion-base ease-out both;
+  @include reduced-motion {
+    animation: none;
+  }
+}
+
+.error {
+  background: $danger-bg;
+  border: 4px solid $charcoal;
+  color: #ffd9d6;
+  padding: 10px 12px;
+  font-weight: 600;
+}
+
+// Stone/wood frame around whatever the registered game renders.
+.frame {
+  @include bevel($dirt, $dirt-light, $dirt-dark);
+  flex: 1;
+  padding: 8px;
+  min-width: 0;
+
+  @include tablet-up {
+    padding: 12px;
+  }
+}
+
+.waiting {
+  padding: 32px 16px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.music {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.volume {
+  min-height: $touch-target;
+  width: 120px;
+  accent-color: $gold;
+}
+
+// ---- Results ----
+.results {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+}
+
+.resultsPanel {
+  @include bevel($parchment, #fff6dc, $parchment-dark);
+  color: $ink;
+  width: 100%;
+  max-width: 520px;
+  padding: 24px 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  @include enter(pop-in);
+
+  @include tablet-up {
+    padding: 32px;
+  }
+}
+
+.trophy {
+  display: inline-block;
+  animation: trophy 400ms ease-out both;
+  @include reduced-motion {
+    animation: none;
+  }
+}
+
+.resultTitle {
+  @include pixel-heading(1.1rem);
+  color: $ink;
+  text-shadow: none;
+  margin: 12px 0 8px;
+}
+
+.resultSub {
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.finalScores {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.finalRow {
+  @include inset($charcoal-light, $stone-dark, #111);
+  color: $parchment;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  font-weight: 700;
+}
+
+.finalRowWinner {
+  border-color: $gold;
+}
+
+.rematchStatus {
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  min-height: 1.4em;
+}
+
+.fieldError {
+  color: #8e1b14;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+
+  @include reduced-motion {
+    display: none;
+  }
+}
+
+.particle {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: 10px;
+  height: 10px;
+  animation: confetti 1100ms ease-out both;
+  animation-delay: var(--delay);
+  background: var(--color);
+}

@@ -1,0 +1,61 @@
+@use '../styles/tokens' as *;
+@use '../styles/mixins' as *;
+
+.button {
+  @include bevel($stone, $stone-light, $stone-dark);
+  @include focus-ring;
+  min-height: $touch-target;
+  min-width: $touch-target;
+  padding: 8px 16px;
+  color: #fff;
+  font-family: $font-pixel;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform $motion-fast ease-out, filter $motion-fast ease-out;
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.12);
+    transform: translateY(-2px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(2px);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    filter: grayscale(0.7) brightness(0.8);
+  }
+
+  @include reduced-motion {
+    transition: none;
+    &:hover:not(:disabled),
+    &:active:not(:disabled) {
+      transform: none;
+    }
+  }
+}
+
+.grass {
+  @include bevel($grass-dark, $grass-light, #2c4d1a);
+}
+
+.gold {
+  @include bevel($gold-dark, $gold, #7a5d0d);
+  color: $ink;
+  text-shadow: none;
+}
+
+.danger {
+  @include bevel(#8e2b26, #c2514a, #5a1512);
+}
+
+.block {
+  width: 100%;
+}

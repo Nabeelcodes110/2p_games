@@ -15,7 +15,13 @@ export type MatchPhase = 'lobby' | 'activeTurn' | 'turnResult' | 'finished';
  * Outcome reported by a server game module AFTER it validated the action.
  * Games never advance rounds, award points directly or decide winners.
  */
-export type GameOutcome = { type: 'correctGuess'; turnId: TurnId; playerId: PlayerId };
+export type GameOutcome =
+  | { type: 'correctGuess'; turnId: TurnId; playerId: PlayerId }
+  /**
+   * A simultaneous-play round was decided by the game module. `winnerId: null` ends the round
+   * with no point (tie / nobody answered).
+   */
+  | { type: 'roundResult'; turnId: TurnId; winnerId: PlayerId | null };
 
 export type TurnEndReason = 'outcome' | 'timeout';
 

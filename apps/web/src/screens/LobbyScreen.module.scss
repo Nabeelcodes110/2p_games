@@ -1,0 +1,140 @@
+@use '../styles/tokens' as *;
+@use '../styles/mixins' as *;
+
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.codeBlock {
+  @include inset($charcoal, $stone-dark, #000);
+  padding: 14px 12px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: $parchment;
+}
+
+.codeLabel {
+  display: block;
+  font-size: 0.8rem;
+  color: $stone-light;
+  margin-bottom: 6px;
+}
+
+.codeValue {
+  @include pixel-heading(1.35rem);
+  letter-spacing: 0.15em;
+  color: $gold;
+  user-select: all;
+}
+
+.players {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
+
+  @include tablet-up {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.slot {
+  @include inset($charcoal-light, $stone-dark, #111);
+  min-height: 120px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: $parchment;
+}
+
+.slotFilled {
+  @include enter(arrive);
+}
+
+.slotEmpty {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: $stone-light;
+  border-style: dashed;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  @include bevel($stone, $stone-light, $stone-dark);
+}
+
+.waitingIcon {
+  animation: bob 1.4s ease-in-out infinite;
+  @include reduced-motion {
+    animation: none;
+  }
+}
+
+.playerHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.playerName {
+  @include pixel-heading(0.75rem);
+  color: $parchment;
+  min-width: 0;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: $charcoal;
+  color: $parchment;
+  border: 2px solid $stone-dark;
+}
+
+.tagHost {
+  color: $gold;
+  border-color: $gold-dark;
+}
+
+.waiting {
+  font-weight: 700;
+  margin-bottom: 16px;
+}

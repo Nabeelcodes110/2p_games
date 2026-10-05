@@ -1,13 +1,34 @@
 // OWNER: Agent 2. Shared theme tokens; Agent 3 may @use these but not edit them.
+// Base palette from the spec; *-dark / *-light are bevel shades chosen for contrast.
 $grass: #5d8c3e;
+$grass-dark: #3f6a27;
+$grass-light: #7fae59;
 $dirt: #79553a;
+$dirt-dark: #55391f;
+$dirt-light: #976f50;
 $stone: #757575;
+$stone-dark: #4a4a4a;
+$stone-light: #a4a4a4;
 $charcoal: #252525;
+$charcoal-light: #353535;
 $sky: #8dc9ee;
 $parchment: #f5e8c8;
+$parchment-dark: #d8c79b;
 $gold: #f2c94c;
+$gold-dark: #b8901d;
+$danger: #ff8a80; // on charcoal: contrast > 7
+$danger-bg: #5a1f1c;
+
+// Text colours. $ink on parchment ≈ 12:1, $parchment on charcoal ≈ 12:1.
+$ink: #2b1d10;
+
+$font-pixel: 'Press Start 2P', 'Courier New', monospace;
+$font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
 $touch-target: 44px;
 $motion-fast: 150ms;
 $motion-base: 200ms;
 $motion-slow: 250ms;
+
+$bp-tablet: 700px;
+$bp-desktop: 1000px;

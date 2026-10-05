@@ -3,5 +3,6 @@ export * from './games.js';
 export * from './room.js';
 export * from './match.js';
 export * from './skribble.js';
+export * from './colors.js';
 export * from './socket.js';
 export * from './engine/matchEngine.js';

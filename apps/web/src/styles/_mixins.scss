@@ -6,3 +6,84 @@
     @content;
   }
 }
+
+@mixin tablet-up {
+  @media (min-width: $bp-tablet) {
+    @content;
+  }
+}
+
+@mixin desktop-up {
+  @media (min-width: $bp-desktop) {
+    @content;
+  }
+}
+
+/// Chunky square border with a light top-left / dark bottom-right bevel.
+@mixin bevel($face, $light, $dark, $outline: $charcoal) {
+  background-color: $face;
+  border: 4px solid $outline;
+  border-radius: 0;
+  box-shadow:
+    inset 4px 4px 0 $light,
+    inset -4px -4px 0 $dark;
+}
+
+/// Pressed-in (inventory slot) look.
+@mixin inset($face: $stone-dark, $light: $stone, $dark: $charcoal) {
+  background-color: $face;
+  border: 4px solid $charcoal;
+  border-radius: 0;
+  box-shadow:
+    inset 4px 4px 0 $dark,
+    inset -4px -4px 0 $light;
+}
+
+@mixin dirt-texture {
+  background-color: $dirt;
+  background-image:
+    linear-gradient(45deg, rgba($dirt-dark, 0.55) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba($dirt-light, 0.35) 25%, transparent 25%);
+  background-size: 16px 16px;
+}
+
+@mixin grass-texture {
+  background-color: $grass;
+  background-image:
+    linear-gradient(90deg, rgba($grass-dark, 0.5) 50%, transparent 50%),
+    linear-gradient(rgba($grass-light, 0.35) 50%, transparent 50%);
+  background-size: 16px 16px, 16px 16px;
+}
+
+@mixin stone-texture {
+  background-color: $stone;
+  background-image:
+    linear-gradient(45deg, rgba($stone-dark, 0.35) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba($stone-light, 0.25) 25%, transparent 25%);
+  background-size: 8px 8px;
+}
+
+@mixin focus-ring {
+  &:focus-visible {
+    outline: 4px solid $gold;
+    outline-offset: 2px;
+  }
+}
+
+@mixin pixel-heading($size: 1rem) {
+  font-family: $font-pixel;
+  font-weight: 400;
+  font-size: $size;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.55);
+  overflow-wrap: anywhere;
+}
+
+/// Short entry animation (transform + opacity only).
+@mixin enter($name) {
+  animation: $name $motion-slow ease-out both;
+  @include reduced-motion {
+    animation: none;
+  }
+}

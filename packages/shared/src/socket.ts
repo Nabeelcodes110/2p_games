@@ -2,6 +2,7 @@
  * CONTRACT (owner: Agent 1; Skribble events coordinated with Agent 3).
  * TypeScript types are not runtime validation: the server validates every incoming payload.
  */
+import type { ColorsSubmitInput, ColorsView } from './colors.js';
 import type { GameId } from './games.js';
 import type { MatchId, MatchState } from './match.js';
 import type { RoomSession, RoomSnapshot } from './room.js';
@@ -58,6 +59,7 @@ export function fail<T = never>(code: ErrorCode, message: string): AckResult<T> 
 /** Per-game player-specific views. Add an entry when a game is added. */
 export interface GameViews {
   skribble: SkribbleView;
+  colors: ColorsView;
 }
 
 export type GameStateSnapshot<G extends GameId = GameId> = {
@@ -101,6 +103,7 @@ export interface ClientToServerEvents {
   'skribble:stroke': (payload: StrokeBatchInput, ack: Ack<{ seq: number }>) => void;
   'skribble:clear': (payload: ClearInput, ack: Ack<{ seq: number }>) => void;
   'skribble:guess': (payload: GuessInput, ack: Ack<{ correct: boolean }>) => void;
+  'colors:submit': (payload: ColorsSubmitInput, ack: Ack<{ distance: number }>) => void;
 }
 
 export interface ServerToClientEvents {

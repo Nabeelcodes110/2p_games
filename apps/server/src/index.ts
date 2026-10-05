@@ -15,10 +15,19 @@ app.get('/health', (_req, res) => {
 const httpServer = createServer(app);
 const io: AppServer = new Server(httpServer, {
   cors: { origin: config.clientOrigins },
+  // Bounds event payload size; strokes are small point batches.
+  maxHttpBufferSize: 64 * 1024,
 });
 
-registerSocketHandlers(io);
+const rooms = registerSocketHandlers(io);
 
 httpServer.listen(config.port, () => {
   console.log(`Server listening on http://localhost:${config.port}`);
 });
+
+function shutdown(): void {
+  rooms.disposeAll();
+  void io.close(() => process.exit(0));
+}
+process.once('SIGINT', shutdown);
+process.once('SIGTERM', shutdown);

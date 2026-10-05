@@ -9,6 +9,7 @@
 import type { ComponentType } from 'react';
 import type { GameId, GameInfo, GameStateSnapshot, MusicConfig, PlayerId, RoomSnapshot } from '@2p/shared';
 import type { AppSocket } from '../socket/types';
+import type { IconName } from '../components/PixelIcon';
 
 export interface GameComponentProps<G extends GameId = GameId> {
   socket: AppSocket;
@@ -23,6 +24,8 @@ export interface GameComponentProps<G extends GameId = GameId> {
 export interface WebGameDefinition<G extends GameId = GameId> {
   id: G;
   info: GameInfo;
+  /** Pixel icon shown on the game card and badges. */
+  icon: IconName;
   Component: ComponentType<GameComponentProps<G>>;
 }
 
@@ -38,6 +41,12 @@ export interface GameHostProps {
   selectedGame: GameId;
   session: GameHostSession;
   music?: MusicConfig;
+  /**
+   * Reads the latest `game:state` the app has cached. The server emits the first snapshot right
+   * after the room flips to `playing`, so it can arrive before GameHost renders or subscribes.
+   * GameHost reads it on mount and again right after subscribing so the snapshot is never lost.
+   */
+  getLatestState?: () => GameStateSnapshot | null;
   /** Called after the player chooses Leave on the results screen or mid-match. */
   onLeave: () => void;
 }

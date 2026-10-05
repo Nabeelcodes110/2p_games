@@ -1,0 +1,24 @@
+@use '../styles/tokens' as *;
+@use '../styles/mixins' as *;
+
+.panel {
+  @include bevel($parchment, #fff6dc, $parchment-dark);
+  color: $ink;
+  padding: 20px 16px;
+  width: 100%;
+  @include enter(slide-up);
+
+  @include tablet-up {
+    padding: 28px;
+  }
+}
+
+.wood {
+  @include bevel($dirt, $dirt-light, $dirt-dark);
+  color: $parchment;
+}
+
+.stone {
+  @include bevel($stone-dark, $stone, $charcoal);
+  color: $parchment;
+}

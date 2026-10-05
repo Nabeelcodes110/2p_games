@@ -1,0 +1,150 @@
+@use '../styles/tokens' as *;
+@use '../styles/mixins' as *;
+
+@keyframes drawer-open {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.screen {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: stretch;
+
+  @include tablet-up {
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+  }
+}
+
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px 16px 16px;
+  text-align: center;
+
+  @include tablet-up {
+    flex: none;
+    padding: 0 0 24px;
+  }
+}
+
+.logo {
+  @include pixel-heading(1.5rem);
+  color: $gold;
+  @include tablet-up {
+    @include pixel-heading(2.25rem);
+    color: $gold;
+  }
+}
+
+.subtitle {
+  color: $parchment;
+  font-size: 1rem;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+// Full width on small phones, bounded panel on larger screens.
+.drawer {
+  @include bevel($stone-dark, $stone, $charcoal);
+  width: 100%;
+  padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+  animation: drawer-open $motion-slow ease-out both;
+
+  @include tablet-up {
+    max-width: 560px;
+    padding: 28px;
+  }
+
+  @include reduced-motion {
+    animation: none;
+  }
+}
+
+.drawerTitle {
+  @include pixel-heading(0.9rem);
+  color: $parchment;
+  margin-bottom: 16px;
+}
+
+.cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+.card {
+  @include inset($charcoal-light, $stone-dark, #111);
+  @include focus-ring;
+  width: 100%;
+  min-height: 96px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  color: $parchment;
+  cursor: pointer;
+  transition: transform $motion-fast ease-out, filter $motion-fast ease-out;
+
+  &:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.2);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  @include reduced-motion {
+    transition: none;
+    &:hover,
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+.cardIcon {
+  @include bevel($grass-dark, $grass-light, #2c4d1a);
+  width: 56px;
+  height: 56px;
+  flex: none;
+  display: grid;
+  place-items: center;
+}
+
+.cardName {
+  @include pixel-heading(0.85rem);
+  display: block;
+  color: $gold;
+}
+
+.cardTagline {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.95rem;
+}
+
+.more {
+  margin-top: 16px;
+  font-size: 0.9rem;
+  color: $stone-light;
+}

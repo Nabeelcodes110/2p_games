@@ -63,6 +63,8 @@ export interface GameSessionContext {
   transport: MatchTransport;
   /** Call only after validating the action; the controller feeds it to the engine exactly once. */
   reportOutcome(outcome: GameOutcome): void;
+  /** Re-sends player-specific snapshots after a visible change that is not a turn boundary. */
+  publishState(): void;
   clock: Clock;
   random(): number;
 }
@@ -81,6 +83,12 @@ export interface GameSession<G extends GameId = GameId> {
     match: MatchState,
     now: number,
   ): AckResult<unknown>;
+  /**
+   * Optional. Called when the turn deadline is reached, before the engine ends the turn as a
+   * plain timeout. Games where players answer independently (Colors) return the round outcome
+   * here; returning null means the turn simply timed out with no result.
+   */
+  resolveTimeout?(match: MatchState): GameOutcome | null;
   /** Turn finished (outcome or timeout): reveal, lock input. Called exactly once per turn. */
   endTurn(match: MatchState): void;
   getPlayerView(playerId: PlayerId): GameViews[G];

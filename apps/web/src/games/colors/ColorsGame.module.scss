@@ -1,0 +1,308 @@
+@use '../../styles/tokens' as *;
+@use '../../styles/mixins' as *;
+
+@keyframes count-pop {
+  from {
+    transform: scale(1.3);
+    opacity: 0.4;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.game {
+  @include bevel($parchment, #fff6dc, $parchment-dark);
+  color: $ink;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  @include tablet-up {
+    padding: 20px;
+  }
+}
+
+.status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+
+.phase {
+  @include pixel-heading(0.8rem);
+  color: $ink;
+  text-shadow: none;
+}
+
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 140px;
+}
+
+.seconds {
+  @include pixel-heading(1.1rem);
+  color: $ink;
+  text-shadow: none;
+  min-width: 3.2ch;
+  text-align: right;
+}
+
+.low {
+  color: #8e1b14;
+}
+
+.bar {
+  @include inset($charcoal, $stone-dark, #000);
+  flex: 1;
+  height: 12px;
+  border-width: 2px;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: $grass-light;
+  transform-origin: left center;
+}
+
+.barLow {
+  background: $danger;
+}
+
+// The rectangle that shows (then hides) the target color.
+.stage {
+  border: 4px solid $charcoal;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 38vh;
+  min-height: 120px;
+  display: grid;
+  place-items: center;
+  transition: background-color $motion-fast linear;
+
+  @include reduced-motion {
+    transition: none;
+  }
+}
+
+.stageReveal {
+  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.35);
+}
+
+.stageHidden {
+  @include stone-texture;
+}
+
+.question {
+  @include pixel-heading(2rem);
+  color: $parchment;
+}
+
+.count {
+  @include pixel-heading(2.25rem);
+  color: #fff;
+  background: rgba(0, 0, 0, 0.7); // keeps the number legible on any target color
+  padding: 8px 16px;
+  animation: count-pop $motion-slow ease-out;
+  @include reduced-motion {
+    animation: none;
+  }
+}
+
+.pickArea {
+  display: grid;
+  gap: 16px;
+
+  @include tablet-up {
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+    align-items: start;
+  }
+}
+
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pad {
+  @include focus-ring;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 150px;
+  max-height: 32vh;
+  border: 4px solid $charcoal;
+  touch-action: none; // only this surface; the page keeps scrolling
+  cursor: crosshair;
+  background-image:
+    linear-gradient(to top, #000, rgba(0, 0, 0, 0)),
+    linear-gradient(to right, #fff, rgba(255, 255, 255, 0));
+
+  &[aria-disabled='true'] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.padHandle {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  transform: translate(-50%, -50%);
+  border: 3px solid #fff;
+  outline: 2px solid $charcoal;
+  pointer-events: none;
+}
+
+.hueLabel {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.hue {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: $touch-target;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+
+  &::-webkit-slider-runnable-track {
+    height: 20px;
+    border: 3px solid $charcoal;
+    background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+  }
+
+  &::-moz-range-track {
+    height: 14px;
+    border: 3px solid $charcoal;
+    background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 36px;
+    margin-top: -10px;
+    border: 3px solid $charcoal;
+    background: #fff;
+    border-radius: 0;
+  }
+
+  &::-moz-range-thumb {
+    width: 14px;
+    height: 30px;
+    border: 3px solid $charcoal;
+    background: #fff;
+    border-radius: 0;
+  }
+
+  &:focus-visible {
+    outline: 4px solid $gold;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.pickSide {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.swatchRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.swatch {
+  width: 64px;
+  height: 64px;
+  flex: none;
+  border: 4px solid $charcoal;
+}
+
+.hex {
+  font-family: $font-pixel;
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.opponent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.error {
+  color: #8e1b14;
+  font-weight: 700;
+}
+
+// ---- Round result ----
+.cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.card {
+  @include inset($charcoal-light, $stone-dark, #111);
+  color: $parchment;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  @include enter(pop-in);
+}
+
+.cardWinner {
+  border-color: $gold;
+}
+
+.cardTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.resultSwatch {
+  display: grid;
+  place-items: center;
+  height: 84px;
+  border: 4px solid $charcoal;
+  background-color: $stone-dark;
+}
+
+.meta {
+  font-size: 0.85rem;
+  color: $parchment-dark;
+}
+
+.next {
+  font-weight: 600;
+  text-align: center;
+}
