@@ -1,0 +1,23 @@
+{
+  "name": "2p-games",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/shared",
+    "apps/server",
+    "apps/web"
+  ],
+  "scripts": {
+    "dev": "npm run build -w @2p/shared && concurrently -k -n server,web -c blue,green \"npm run dev -w @2p/server\" \"npm run dev -w @2p/web\"",
+    "build": "npm run build -w @2p/shared && npm run build -w @2p/server && npm run build -w @2p/web",
+    "typecheck": "npm run typecheck -w @2p/shared && npm run typecheck -w @2p/server && npm run typecheck -w @2p/web",
+    "test": "npm run test --workspaces --if-present",
+    "check": "npm run typecheck && npm run test && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "concurrently": "^10.0.5",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@2p/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch --conditions=source --env-file-if-exists=.env src/index.ts",
+    "build": "tsc -b ../../packages/shared && tsc -p tsconfig.build.json",
+    "start": "node --env-file-if-exists=.env dist/index.js",
+    "typecheck": "tsc -b ../../packages/shared && tsc -p tsconfig.json",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "socket.io": "^4.8.4"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "socket.io-client": "^4.8.4",
+    "tsx": "^4.23.15"
+  }
+}

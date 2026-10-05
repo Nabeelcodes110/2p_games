@@ -1,0 +1,8 @@
+// OWNER: Agent 2. Shared mixins; Agent 3 may @use these but not edit them.
+@use 'tokens' as *;
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
